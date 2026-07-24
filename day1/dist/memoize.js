@@ -7,7 +7,6 @@ const memoize = (func) => {
             console.log("adding to cache");
             let value = func.apply(null, args);
             console.log(args);
-            // let value = func(args);
             map.set(key, value);
         }
         else

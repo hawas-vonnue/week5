@@ -13,6 +13,7 @@ export async function fetchJson(url, options) {
     }
     return responseJson;
 }
+//------------------------------Test--------------------------------------
 let url = "https://jsonplaceholder.typicode.com/todos/1";
 fetchJson(url, {}).then((response) => {
     console.log(response);

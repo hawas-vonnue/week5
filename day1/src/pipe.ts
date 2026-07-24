@@ -9,6 +9,7 @@
 //         return value;
 //     };
 // }
+
 function pipe(...fns: ((arg: unknown) => unknown)[]): (x: unknown) => unknown {
     return function (x: unknown) {
         let value = x;

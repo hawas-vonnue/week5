@@ -12,6 +12,8 @@ export async function fetchJson(url: string, options: object): Promise<object> {
     return responseJson;
 }
 
+//------------------------------Test--------------------------------------
+
 let url: string = "https://jsonplaceholder.typicode.com/todos/1";
 fetchJson(url, {}).then((response) => {
     console.log(response);

@@ -1,4 +1,5 @@
-const memoize = (func: (...args: unknown[]) => unknown) => {
+type functionType = (...args: unknown[]) => unknown;
+const memoize = (func: functionType): functionType => {
     const map = new Map();
     return function (...args: unknown[]) {
         let key = args.join(",");
@@ -6,7 +7,6 @@ const memoize = (func: (...args: unknown[]) => unknown) => {
             console.log("adding to cache");
             let value = func.apply(null, args);
             console.log(args);
-            // let value = func(args);
             map.set(key, value);
         } else console.log("fetching from cache");
 

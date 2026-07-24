@@ -1,9 +1,4 @@
 "use strict";
-// export function debounce(fn: () => void, time = 300): void {
-//     setTimeout(() => {
-//         fn();
-//     }, time);
-// }
 function debounce(func, wait) {
     let timeout;
     return (...args) => {

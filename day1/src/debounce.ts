@@ -1,13 +1,4 @@
-// export function debounce(fn: () => void, time = 300): void {
-//     setTimeout(() => {
-//         fn();
-//     }, time);
-// }
-function debounce(
-    this: void,
-    func: (...args: unknown[]) => void,
-    wait: number
-) {
+function debounce(this: void, func: functionType, wait: number): functionType {
     let timeout: number;
     return (...args: unknown[]) => {
         const context = this;
