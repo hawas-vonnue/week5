@@ -19,7 +19,9 @@ function isUser(value: unknown): value is User {
         typeof value === "object" &&
         value !== null &&
         "id" in value &&
-        "name" in value
+        "name" in value &&
+        typeof value.id === "number" &&
+        typeof value.name === "string"
     );
 }
 
@@ -77,7 +79,9 @@ processInput(null);
 processInput(a);
 
 let user: User = { id: 1, name: "batman" };
+let user2 = { id: "hello", name: "hii" };
 console.log(isUser(user));
+console.log(isUser(user2));
 console.log(isUser("hello"));
 
 let circle: Shape = {
