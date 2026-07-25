@@ -1,6 +1,11 @@
 {
     "compilerOptions": {
-        "strict": true,
+        //made strict false to see other flags work individually
+        "strict": false,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "noUncheckedIndexedAccess": true,
         "target": "ES2022",
         "module": "ES2022",
         "outDir": "dist",
