@@ -4,6 +4,10 @@
         "target": "ES2022",
         "module": "ES2022",
         "outDir": "dist",
-        "rootDir": "src"
-    }
+        "rootDir": "src",
+        "moduleResolution": "bundler",
+        "types": ["node"],
+        "esModuleInterop": true
+    },
+    "include": ["./src/types/test_library", "**/*.ts", "./lib/**.ts"]
 }
