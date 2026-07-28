@@ -5,8 +5,9 @@
         "module": "ES2022",
         "outDir": "dist",
         "rootDir": "src",
+        "moduleResolution": "bundler",
         "types": ["node"],
         "esModuleInterop": true
     },
-    "include": ["./src/types/test_library", "**/*.ts"]
+    "include": ["./src/types/test_library", "**/*.ts", "./lib/**.ts"]
 }

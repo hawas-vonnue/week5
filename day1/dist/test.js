@@ -1,4 +1,4 @@
-import { getSum } from "../src/types/test_library.js";
+import { getSum } from "#test_library";
 //
 // /home/hawas.backer/Desktop/week5/day1/src/types/test_library
 //typescript shows error - so type is working
