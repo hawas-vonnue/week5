@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "target": "ES2022",
+        "module": "ES2022",
+        "outDir": "dist",
+        "rootDir": "src",
+        // "moduleResolution": "bundler",
+        "experimentalDecorators": true
+        // "allowJs": true,
+        // "checkJs": true
+    }
+    // "include": ["./src/types/test_library", "**/*.ts", "./lib/**.ts"]
+}

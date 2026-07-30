@@ -1,0 +1,14 @@
+{
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc --watch",
+        "start": "npm run build -- -w"
+    },
+    "devDependencies": {
+        "@types/node": "^26.1.2"
+    },
+    "imports": {
+        "#test_library": "./src/types/library.js"
+    },
+    "type": "module"
+}
