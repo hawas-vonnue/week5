@@ -1,8 +1,9 @@
-import { navigate } from "../util.js";
-import { register } from "../util.js";
-import { onRouteChange } from "../main.js";
-import { renderHomePage } from "../pages/home.js";
-import { renderListPage } from "../pages/list.js";
+import { navigate } from "@utils/util";
+import { register } from "@utils/util";
+import { renderHomePage } from "@pages/home";
+import { renderListPage } from "@pages/list";
+import { addAnchorEventListeners } from "../main";
+
 const fetch = require("cross-fetch");
 global.fetch = fetch;
 
@@ -19,7 +20,7 @@ describe("Router tests:", () => {
         <main></main>
         `;
     let path = "home";
-    let routes = {};
+    let routes: Record<string, Function> = {};
     let a = 10;
     test("register test", () => {
         let fn = () => {
@@ -29,35 +30,26 @@ describe("Router tests:", () => {
         expect(routes[path]).toBe(fn);
     });
     test("testing navigate function", () => {
-        navigate(routes, path);
+        navigate(routes, path, {});
         expect(a).toBe(20);
     });
     test("navigation", async () => {
-        let path1 = "/day5/index.html/home";
+        let path1 = "/home";
         let routes1 = {};
         register(routes1, path1, renderHomePage);
-        await navigate(routes1, path1);
+        await navigate(routes1, path1, {});
         const homeElement = document.querySelector(".home");
         expect(homeElement).not.toBe(null);
 
-        path1 = "/day5/index.html/list";
+        path1 = "/list";
         register(routes1, path1, renderListPage);
-        await navigate(routes1, path1);
+        await navigate(routes1, path1, {});
         const listElement = document.querySelector(".list");
         expect(listElement).not.toBe(null);
     });
     test("url change", async () => {
         const links = document.querySelectorAll("a");
-        document.querySelectorAll("a").forEach((element) => {
-            element.addEventListener("click", (event) => {
-                event.preventDefault();
-                let pathname = document.location.pathname;
-                pathname = `/day5/index.html`;
-                const url = `${pathname}/${event.target.id}`;
-                history.pushState({}, null, url);
-                onRouteChange(url, {});
-            });
-        });
+        addAnchorEventListeners();
         links[1].click();
         expect(document.location.pathname).toBe("/day5/index.html/list");
         links[0].click();

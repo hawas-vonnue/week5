@@ -1,2 +1,0 @@
-- queryselector,id such property does not exist on type error - check if it is instance of HTMLElement or such which narrows and clears the error
-    - for src check if it is instance of HTMLImageElement

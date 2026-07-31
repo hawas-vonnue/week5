@@ -1,6 +1,6 @@
-import { parseCSV } from "../util.js";
-import { createCard } from "../util.js";
-import { showToast } from "../showToast.js";
+import { parseCSV } from "../utils/util.js";
+import { createCard } from "../utils/util.js";
+import { showToast } from "../utils/showToast.js";
 export async function renderListPage() {
     const documentFragment = document.createElement("div");
     const headingElement = document.createElement("h1");
@@ -13,9 +13,6 @@ export async function renderListPage() {
     headingElement.textContent = "MOVIES";
     documentFragment.append(headingElement, spinnerElement);
     mainElement.innerHTML = "";
-    mainElement.append(documentFragment);
-    //use timeout just to simulate time taking and to see loading
-    // setTimeout(async () => {
     try {
         let movies = await parseCSV();
         for (let i = 0; i < movies.length; i++) {
@@ -27,9 +24,9 @@ export async function renderListPage() {
         }
         documentFragment.append(cardContainer);
         spinnerElement.classList.add("hidden");
+        mainElement.append(documentFragment);
     }
     catch (error) {
         showToast("error in fetching data", 3, "error");
     }
-    // }, 300);
 }

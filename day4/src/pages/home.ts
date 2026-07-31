@@ -1,5 +1,5 @@
-import { parseCSV } from "../util.js";
-import { createCard } from "../util.js";
+import { parseCSV } from "@utils/util.js";
+import { createCard } from "@utils/util.js";
 
 export async function renderHomePage() {
     const documentFragment = document.createElement("div");

@@ -1,6 +1,8 @@
-import { onRouteChange } from "./main.js";
-import { onMoviesListChange } from "./main.js";
+import { onRouteChange } from "../main.js";
+import { onMoviesListChange } from "../main.js";
 import { showToast } from "./showToast.js";
+import { searchMovie } from "./searchMovie.js";
+import { State, types, actionInterface, ParamsInterface } from "../types.js";
 
 export function register(
     routes: Record<string, Function>,
@@ -139,7 +141,7 @@ export function createModal() {
         overlay.style.display = "none";
     });
 
-    searchButton.addEventListener("click", () => {
+    searchButton.addEventListener("click", async () => {
         spinnerElement.classList.remove("hidden");
         searchResultContainer.innerHTML = "";
         warningElement.textContent = "";
@@ -160,6 +162,7 @@ export function createModal() {
                 (error) => {
                     warningElement.textContent = "No results found";
                     spinnerElement.classList.add("hidden");
+                    console.log(error);
                 }
             );
         }
@@ -180,35 +183,6 @@ export async function fetchJson(url: string) {
     } catch (error) {
         if (error instanceof Error) throw new Error(error.message);
     }
-}
-
-interface ParamsInterface {
-    imdbID?: string;
-}
-
-type actionInterface = RouteChanged | MovieListChanged | onLoadInterface;
-
-interface RouteChanged {
-    type: "ROUTE_CHANGED";
-    payload: {
-        path: string;
-        params: ParamsInterface;
-    };
-}
-
-interface MovieListChanged {
-    type: "MOVIESLIST_CHANGED";
-    payload: {
-        id: string;
-        type: "add" | "delete";
-    };
-}
-
-interface onLoadInterface {
-    type: "ON_LOAD";
-    payload: {
-        moviesList: Set<string>;
-    };
 }
 
 export function reducer(state: State, action: actionInterface): State {
@@ -241,16 +215,6 @@ export function reducer(state: State, action: actionInterface): State {
             return state;
     }
 }
-
-export interface State {
-    route: {
-        path: string;
-        params: object;
-    };
-    moviesList: Set<string>;
-}
-
-type types = "ROUTE_CHANGED" | "MOVIESLIST_CHANGED" | "ON_LOAD";
 
 // Create Store
 export function createStore(
@@ -321,9 +285,11 @@ export function createStore(
 
 //use filepath = http://127.0.0.1:8080/Top_100_Movies.csv
 //when testing because cross-fetch needs absolute url
-//when in github pages use - /week4/day5/Top_100_Movies.csv
-//parse
-export async function parseCSV(filePath = "/Top_100_Movies.csv") {
+// else use filepath = "/Top_100_Movies.csv"
+
+export async function parseCSV(
+    filePath = "http://127.0.0.1:8080/Top_100_Movies.csv"
+) {
     const response = await fetch(filePath);
     const data = await response.text();
     const lines = data.trim().split(/\r?\n/);
@@ -408,28 +374,6 @@ export function createSearchResultCard(
     });
 
     return cardElement;
-}
-
-export async function searchMovie(name: string) {
-    let url = `https://www.omdbapi.com/?s=${name}&page=1&apikey=cbd3390f`;
-    let results = await fetchJson(url);
-    if (results.Response === "false") {
-        Promise.reject(new Error("couldnt find results"));
-    }
-    let movieArray = results.Search;
-    const documentFragment = document.createDocumentFragment();
-    for (let movie of movieArray) {
-        let card = createSearchResultCard(
-            movie.Title,
-            movie.Year,
-            movie.Poster
-        );
-        card.dataset.imdbId = movie.imdbID;
-
-        documentFragment.append(card);
-    }
-
-    return documentFragment;
 }
 
 export async function addToWatchList(imdbId: string) {

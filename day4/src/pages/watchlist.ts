@@ -27,7 +27,19 @@ export function renderWatchList() {
     mainElement!.innerHTML = "";
     mainElement!.append(documentFragment);
     button.addEventListener("click", () => {
-        const overlay = document.querySelector(".overlay");
-        if (overlay instanceof HTMLElement) overlay.style.display = "flex";
+        try {
+            displayOverlay();
+        } catch (error) {
+            console.log(error);
+        }
     });
+}
+
+export function displayOverlay() {
+    const overlay = document.querySelector(".overlay");
+    if (overlay instanceof HTMLElement) {
+        overlay.style.display = "flex";
+    } else {
+        throw new Error("Overlay not found");
+    }
 }

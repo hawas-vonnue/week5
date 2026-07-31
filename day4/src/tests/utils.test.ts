@@ -1,16 +1,16 @@
-import { createCard, createSearchResultCard, searchMovie } from "../util.js";
-import { routesMap } from "../main.js";
-import { register } from "../util.js";
-import { renderDetailPage } from "../pages/detail.js";
-import { onMoviesListChange } from "../main.js";
-import { showToast } from "../showToast.js";
-import { renderListPage } from "../pages/list.js";
-import { store } from "../main.js";
+import {
+    addToWatchList,
+    createCard,
+    createSearchResultCard,
+    register,
+} from "@utils/util";
+import { routesMap, store } from "../main";
+import { renderDetailPage } from "@pages/detail";
+import { searchMovie } from "../utils/searchMovie";
+import fetch from "cross-fetch";
 
-jest.mock("../showToast.js");
-jest.mock("../pages/detail.js");
+jest.mock("../pages/detail");
 
-const fetch = require("cross-fetch");
 global.fetch = fetch;
 
 describe("createCard event listeners", () => {
@@ -94,16 +94,16 @@ describe("createCard event listeners", () => {
         `;
     const card = createCard(
         "test",
-        10,
-        "hello",
+        "10",
+        ["hello"],
         "https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_QL75_UX380_CR0,1,380,562_.jpg",
-        2010,
+        "2010",
         "tt2543164",
         "true"
     );
     register(routesMap, "/detail", renderDetailPage);
     const mainElement = document.querySelector("main");
-    mainElement.append(card);
+    mainElement!.append(card);
     test("opening detail page", async () => {
         card.click();
         expect(renderDetailPage).toHaveBeenCalled();
@@ -124,21 +124,48 @@ describe("createCard event listeners", () => {
         const watchListContainer = document.querySelector(
             ".watchListContainer"
         );
-        watchListContainer.append(card);
+        watchListContainer!.append(card);
         const deleteButton = card.querySelector(".watchedButton");
-        deleteButton.click();
-        expect(store.getState().moviesList.has(card.id)).toBe(false);
+        if (deleteButton instanceof HTMLButtonElement) {
+            deleteButton!.click();
+            expect(store.getState().moviesList.has(card.id)).toBe(false);
+        }
     });
     test("create search result card", async () => {
         const card = await createSearchResultCard(
             "hello",
-            2012,
+            "2012",
             "https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_QL75_UX380_CR0,1,380,562_.jpg"
         );
         expect(card).not.toBe(null);
     });
+    test("add to watch list", async () => {
+        let card = await addToWatchList("tt2543164");
+        expect(card).not.toBe(null);
+    });
+    test("fall back link works:", () => {
+        let card = createCard(
+            "inception",
+            "10",
+            ["Drama", "Psychological"],
+            "https://m.media-amazon.com/images/M/MV5BYWM1YmZkNTctZDAwNy00ZTY4LWFjMTktYzU4ZjViMmU1OTJmXkEyXkFqcGdeQXVyMTA0MTM5NjI2._V1_QL75_UX380_CR0,4,380,562_.jpg",
+            "20110",
+            "10001",
+            "true"
+        );
+
+        let errorEvent = new ErrorEvent("error", {});
+
+        let image = card.querySelector("img");
+
+        if (image) image.dispatchEvent(errorEvent);
+        expect(image?.src).toBe("https://picsum.photos/200/300");
+    });
     test("search a movie", async () => {
         const card = await searchMovie("hello");
         expect(card).not.toBe(null);
+    });
+    test("search movie where error is thrown", async () => {
+        await expect(searchMovie("e")).rejects.toThrow();
     });
 });

@@ -1,9 +1,9 @@
-import { fetchJson } from "../util.js";
+import { fetchJson } from "../utils/util.js";
 export async function renderDetailPage(imdbId) {
     const documentFragment = document.createElement("div");
     documentFragment.classList.add("detail");
     const detailedCard = document.querySelector(".detailedCard");
-    let detailedCardClone = detailedCard.cloneNode(true);
+    let detailedCardClone = detailedCard?.cloneNode(true);
     let url = `https://www.omdbapi.com/?i=${imdbId}&page=1&apikey=cbd3390f`;
     let result = await fetchJson(url);
     if (detailedCardClone instanceof HTMLElement) {
@@ -31,5 +31,8 @@ export async function renderDetailPage(imdbId) {
         const mainElement = document.querySelector("main");
         mainElement.innerHTML = "";
         mainElement.append(documentFragment);
+    }
+    else {
+        Promise.reject(new Error("Detailed card not found"));
     }
 }
