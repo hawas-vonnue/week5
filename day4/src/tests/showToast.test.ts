@@ -1,4 +1,4 @@
-import { showToast } from "../showToast";
+import { showToast } from "@utils/showToast";
 
 test("test show toast", () => {
     showToast("hello", 10, "error");

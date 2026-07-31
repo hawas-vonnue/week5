@@ -3,11 +3,11 @@ import { renderListPage } from "./pages/list.js";
 import { renderDetailPage } from "./pages/detail.js";
 import { renderSettingsPage } from "./pages/settings.js";
 import { renderWatchList } from "./pages/watchlist.js";
-import { createModal, navigate } from "./util.js";
-import { register } from "./util.js";
-import { createStore } from "./util.js";
-import { reducer } from "./util.js";
-import { renderUpdatedMoviesList } from "./util.js";
+import { createModal, navigate } from "./utils/util.js";
+import { register } from "./utils/util.js";
+import { createStore } from "./utils/util.js";
+import { reducer } from "./utils/util.js";
+import { renderUpdatedMoviesList } from "./utils/util.js";
 const routes = [
     "/day5/index.html/home",
     "/day5/index.html/list",
@@ -21,20 +21,22 @@ register(routesMap, routes[1], renderListPage);
 register(routesMap, routes[2], renderDetailPage);
 register(routesMap, routes[3], renderSettingsPage);
 register(routesMap, routes[4], renderWatchList);
-const links = document.querySelectorAll("a");
-links.forEach((element) => {
-    element.addEventListener("click", (event) => {
-        event.preventDefault();
-        let pathname = document.location.pathname;
-        pathname = `/day5/index.html`;
-        if (event.target instanceof HTMLElement) {
-            const url = `${pathname}/${event.target.id}`;
-            history.pushState({}, "", url);
-            onRouteChange(url, {});
-        }
+export function addAnchorEventListeners() {
+    const links = document.querySelectorAll("a");
+    links.forEach((element) => {
+        element.addEventListener("click", (event) => {
+            event.preventDefault();
+            let pathname = document.location.pathname;
+            pathname = `/day5/index.html`;
+            if (event.target instanceof HTMLElement) {
+                const url = `${pathname}/${event.target.id}`;
+                history.pushState({}, "", url);
+                onRouteChange(url, {});
+            }
+        });
     });
-});
-// comment this when testing because it affects with navigation when liv-server is on and we test
+}
+addAnchorEventListeners();
 window.onload = (event) => {
     init();
 };
@@ -93,11 +95,14 @@ store.subscribe("MOVIESLIST_CHANGED", (state) => {
     // updateMovieList(state);
     renderUpdatedMoviesList(state);
 });
-const overlay = createModal();
+let overlay = createModal();
 document.body.prepend(overlay);
 window.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
-        if (overlay.style.display !== "none")
-            overlay.style.display = "none";
+        let overlay1 = document.querySelector(".overlay");
+        if (overlay1 instanceof HTMLElement) {
+            if (overlay1?.style.display !== "none")
+                overlay1.style.display = "none";
+        }
     }
 });

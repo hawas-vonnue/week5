@@ -1,7 +1,10 @@
-import { describe } from "node:test";
-import { renderDetailPage } from "../pages/detail.js";
-import { renderWatchList } from "../pages/watchlist.js";
-import { createModal } from "../util.js";
+import { renderDetailPage } from "@pages/detail";
+import { displayOverlay, renderWatchList } from "@pages/watchlist";
+import { createModal } from "@utils/util";
+import * as searchMovieModule from "@utils/searchMovie";
+
+const flushPromises = () =>
+    new Promise(jest.requireActual("timers").setImmediate);
 
 const fetch = require("cross-fetch");
 global.fetch = fetch;
@@ -104,13 +107,99 @@ describe("watchList page", () => {
         </header>
         <main></main>
     `;
-        await renderWatchList();
         const overlay = createModal();
+        renderWatchList();
+        const addButton = document.querySelector("button");
+        expect(() => {
+            displayOverlay();
+        }).toThrow();
         document.body.append(overlay);
 
-        const addButton = document.querySelector("button");
-        addButton.click();
+        addButton!.click();
 
         expect(overlay.style.display).toBe("flex");
+    });
+    test("overlay closes", async () => {
+        document.body.innerHTML = `
+        <header>
+            <nav>
+                <a href="" id="home">Home</a>
+                <a href="" id="list">List</a>
+                <a href="" id="watchlist">Watchlist</a>
+                <a href="" id="settings">Settings</a>
+            </nav>
+        </header>
+        <main></main>
+    `;
+        const overlay = createModal();
+        renderWatchList();
+        const addButton = document.querySelector("button");
+        document.body.append(overlay);
+        addButton!.click();
+
+        let closeButton = document.querySelector(".closeOverlayButton");
+        if (closeButton instanceof HTMLElement) {
+            closeButton!.click();
+            expect(overlay.style.display).toBe("none");
+        }
+        addButton!.click();
+
+        let keyboardEvent = new KeyboardEvent("keydown", {
+            key: "Escape",
+            code: "Escape",
+        });
+
+        // await user.keyboard("{Escape}");
+        window.dispatchEvent(keyboardEvent);
+        expect(overlay.style.display).toBe("none");
+    });
+
+    test("search button works", async () => {
+        document.body.innerHTML = `
+        <header>
+            <nav>
+                <a href="" id="home">Home</a>
+                <a href="" id="list">List</a>
+                <a href="" id="watchlist">Watchlist</a>
+                <a href="" id="settings">Settings</a>
+            </nav>
+        </header>
+        <main></main>
+    `;
+        let searchMovieSpy = jest
+            .spyOn(searchMovieModule, "searchMovie")
+            .mockImplementationOnce(async () =>
+                document.createDocumentFragment()
+            );
+
+        const overlay = createModal();
+        renderWatchList();
+        const addButton = document.querySelector("button");
+        document.body.append(overlay);
+        const spinnerElement = document.querySelector(".spinner");
+        addButton!.click();
+
+        const inputElement = document.querySelector("input");
+        inputElement!.value = "hello";
+        let searchButton = document.querySelector(".searchButton");
+        if (searchButton instanceof HTMLElement) searchButton?.click();
+        expect(searchMovieSpy).toHaveBeenCalled();
+
+        expect(spinnerElement?.classList).not.toContain("hidden");
+
+        let warningElement = document.querySelector(".warning");
+
+        inputElement!.value = "inception";
+        searchMovieSpy.mockImplementationOnce(() => Promise.reject("hello"));
+        if (searchButton instanceof HTMLElement) searchButton?.click();
+        await flushPromises();
+        expect(warningElement?.textContent).toBe("No results found");
+
+        inputElement!.value = "he";
+        if (searchButton instanceof HTMLElement) searchButton?.click();
+
+        expect(warningElement?.textContent).toBe(
+            "Type at least three characters"
+        );
     });
 });

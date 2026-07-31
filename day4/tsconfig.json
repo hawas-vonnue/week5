@@ -5,10 +5,13 @@
         "module": "ES2022",
         "outDir": "dist",
         "rootDir": "src",
-        // "moduleResolution": "bundler",
-        "experimentalDecorators": true
-        // "allowJs": true,
-        // "checkJs": true
+        "experimentalDecorators": true,
+        "types": ["node", "jest"],
+        "esModuleInterop": true,
+        "paths": {
+            "@pages/*": ["./src/pages/*"],
+            "@utils/*": ["./src//utils/*"]
+        },
+        "declaration": true
     }
-    // "include": ["./src/types/test_library", "**/*.ts", "./lib/**.ts"]
 }
