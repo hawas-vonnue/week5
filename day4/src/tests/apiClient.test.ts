@@ -1,18 +1,30 @@
 import { ApiClient } from "@utils/apiClient";
 import fetch from "cross-fetch";
 
-// global.fetch = jest.fn().mockImplementation((args) => {
-//     return args;
-// });
+type User = {
+    id: number;
+    name: string;
+};
 
-global.fetch = fetch;
+const mockUser = {
+    id: 1,
+    name: "John",
+};
+global.fetch = jest.fn().mockImplementation((args) => {
+    return {
+        ok: true,
+        json: () => mockUser,
+    };
+});
+
+// global.fetch = fetch;
 
 describe("testing api client", () => {
     const apiClient = new ApiClient("https://jsonplaceholder.typicode.com");
 
     test("get", async () => {
-        let response = await apiClient.get<object>("/posts/1");
-        expect(typeof response).toBe("object");
+        let response = await apiClient.get<User>("/posts/1");
+        expect(response).toBe(mockUser);
     });
 
     test("post", async () => {
@@ -21,11 +33,8 @@ describe("testing api client", () => {
             body: "body of post",
             id: 111,
         });
-        let response: string = await apiClient.post<string, typeof body>(
-            "/posts",
-            body
-        );
-        expect(typeof response).toBe("object");
+        let response = await apiClient.post<User, typeof body>("/posts", body);
+        expect(response).toBe(mockUser);
     });
 
     test("put", async () => {
@@ -34,15 +43,12 @@ describe("testing api client", () => {
             name: "hello",
         });
 
-        let response = await apiClient.put<object, typeof body>(
-            "/posts/1",
-            body
-        );
-        expect(typeof response).toBe("object");
+        let response = await apiClient.put<User, typeof body>("/posts/1", body);
+        expect(response).toBe(mockUser);
     });
 
     test("delete", async () => {
-        let response = await apiClient.delete<object>("/posts/1");
-        expect(typeof response).toBe("object");
+        let response = await apiClient.delete<User>("/posts/1");
+        expect(response).toBe(mockUser);
     });
 });

@@ -2,6 +2,7 @@ export async function fetchJson<T>(url: string, options: object): Promise<T> {
     let responseJson;
     try {
         const response = await fetch(url, options);
+        console.log(response);
         if (!response.ok) {
             throw new Error("Error while fetching");
         }
