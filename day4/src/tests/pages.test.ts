@@ -149,7 +149,6 @@ describe("watchList page", () => {
             code: "Escape",
         });
 
-        // await user.keyboard("{Escape}");
         window.dispatchEvent(keyboardEvent);
         expect(overlay.style.display).toBe("none");
     });

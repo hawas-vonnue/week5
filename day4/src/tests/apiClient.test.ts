@@ -1,5 +1,4 @@
 import { ApiClient } from "@utils/apiClient";
-import fetch from "cross-fetch";
 
 type User = {
     id: number;
@@ -16,8 +15,6 @@ global.fetch = jest.fn().mockImplementation((args) => {
         json: () => mockUser,
     };
 });
-
-// global.fetch = fetch;
 
 describe("testing api client", () => {
     const apiClient = new ApiClient("https://jsonplaceholder.typicode.com");

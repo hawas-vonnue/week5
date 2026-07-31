@@ -3,8 +3,8 @@ import { register } from "@utils/util";
 import { renderHomePage } from "@pages/home";
 import { renderListPage } from "@pages/list";
 import { addAnchorEventListeners } from "../main";
+import fetch from "cross-fetch";
 
-const fetch = require("cross-fetch");
 global.fetch = fetch;
 
 describe("Router tests:", () => {

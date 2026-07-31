@@ -80,7 +80,6 @@ export function createCard(
             if (event.currentTarget instanceof HTMLElement) {
                 const cardToDelete =
                     event.currentTarget!.parentElement!.parentElement;
-                // let movies = new Set();
                 await onMoviesListChange("delete", cardToDelete!.id);
                 showToast("removed from watchlist", 3, "success");
             }
@@ -284,7 +283,7 @@ export function createStore(
 }
 
 //use filepath = http://127.0.0.1:8080/Top_100_Movies.csv
-//when testing because cross-fetch needs absolute url
+//when testing (or in localhost )because cross-fetch needs absolute url
 // else use filepath = "/Top_100_Movies.csv"
 
 export async function parseCSV(
@@ -416,18 +415,3 @@ export async function renderUpdatedMoviesList(state: State) {
     watchListContainer!.replaceChildren(documentFragment);
     spinner!.classList.add("hidden");
 }
-
-// export async function updateMovieList(state: State) {
-//     let type = state.movieChanged.type;
-//     let id = state.movieChanged.id;
-//     const watchListContainer = document.querySelector(".watchListContainer");
-//     if (type === "delete") {
-//         const card = document.getElementById(id);
-//         if (card) watchListContainer!.removeChild(card);
-//     }
-//     if (type === "add") {
-//         const card = await addToWatchList(id);
-//         watchListContainer!.append(card);
-// showToast(`added movie to watchlist`, 3, "success");
-//     }
-// }
