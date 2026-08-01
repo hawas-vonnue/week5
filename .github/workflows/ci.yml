@@ -12,3 +12,24 @@ jobs:
             - run: tsc --noEmit
             - run: npx eslint
             - run: npx jest --coverage
+
+name: learn-github-actions
+run-name: ${{ github.actor }} is learning GitHub Actions
+on: [push]
+jobs:
+  check-bats-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: install dependencies
+        run: npm ci
+        working-directory: ./day4
+      - name: verify code
+        run: |
+             tsc --noEmit
+             npx eslint
+             npx jest --coverage .
+        working-directory: ./day4
