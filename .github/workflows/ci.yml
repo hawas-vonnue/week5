@@ -8,9 +8,7 @@ jobs:
             - uses: actions/setup-node@v7
               with:
                   node-version: "24"
-            - run: npm i tsc
-            - run: npm i eslint
-            - run: npm i jest
+            - run: npm ci
             - run: tsc --noEmit
             - run: npx eslint
             - run: npx jest --coverage
