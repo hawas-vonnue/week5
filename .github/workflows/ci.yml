@@ -1,0 +1,13 @@
+name: before push
+run-name: ${{ github.actor }} doing GitHub Actions
+on: [push]
+jobs:
+    check-bats-version:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: "24"
+            - run: tsc --noEmit
+            - run: eslint .
+            - run: jest --coverage
