@@ -12,6 +12,10 @@ jobs:
             - name: install dependencies
               run: npm ci
               working-directory: ./day4
+
+            - name: Start local server
+              run: npx http-server -p 8080 &
+
             - name: verify code
               run: |
                   tsc --noEmit
