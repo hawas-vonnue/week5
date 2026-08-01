@@ -3,9 +3,9 @@ export async function renderDetailPage(imdbId) {
     const documentFragment = document.createElement("div");
     documentFragment.classList.add("detail");
     const detailedCard = document.querySelector(".detailedCard");
-    let detailedCardClone = detailedCard?.cloneNode(true);
-    let url = `https://www.omdbapi.com/?i=${imdbId}&page=1&apikey=cbd3390f`;
-    let result = await fetchJson(url);
+    const detailedCardClone = detailedCard?.cloneNode(true);
+    const url = `https://www.omdbapi.com/?i=${imdbId}&page=1&apikey=cbd3390f`;
+    const result = await fetchJson(url);
     if (detailedCardClone instanceof HTMLElement) {
         const img = detailedCardClone.querySelector("img");
         const nameElement = detailedCardClone.querySelector(".headingSection h2");

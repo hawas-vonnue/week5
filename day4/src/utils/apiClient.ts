@@ -32,8 +32,8 @@ export class ApiClient {
     }
 
     async requestInterceptor<T, B>(path: string, option: object): Promise<T> {
-        let url = this.baseUrl + path;
-        let result = await fetchJson<T>(url, option);
+        const url = this.baseUrl + path;
+        const result = await fetchJson<T>(url, option);
 
         return this.responseInterceptor(result);
     }

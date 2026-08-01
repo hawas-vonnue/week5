@@ -2,6 +2,7 @@ export async function fetchJson(url, options) {
     let responseJson;
     try {
         const response = await fetch(url, options);
+        console.log(response);
         if (!response.ok) {
             throw new Error("Error while fetching");
         }
@@ -26,8 +27,8 @@ export class ApiClient {
         return response;
     }
     async requestInterceptor(path, option) {
-        let url = this.baseUrl + path;
-        let result = await fetchJson(url, option);
+        const url = this.baseUrl + path;
+        const result = await fetchJson(url, option);
         return this.responseInterceptor(result);
     }
     async get(path) {

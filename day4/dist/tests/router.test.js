@@ -3,7 +3,7 @@ import { register } from "../utils/util";
 import { renderHomePage } from "../pages/home";
 import { renderListPage } from "../pages/list";
 import { addAnchorEventListeners } from "../main";
-const fetch = require("cross-fetch");
+import fetch from "cross-fetch";
 global.fetch = fetch;
 describe("Router tests:", () => {
     document.body.innerHTML = `
@@ -17,11 +17,11 @@ describe("Router tests:", () => {
         </header>
         <main></main>
         `;
-    let path = "home";
-    let routes = {};
+    const path = "home";
+    const routes = {};
     let a = 10;
     test("register test", () => {
-        let fn = () => {
+        const fn = () => {
             a = 20;
         };
         register(routes, path, fn);
@@ -33,7 +33,7 @@ describe("Router tests:", () => {
     });
     test("navigation", async () => {
         let path1 = "/home";
-        let routes1 = {};
+        const routes1 = {};
         register(routes1, path1, renderHomePage);
         await navigate(routes1, path1, {});
         const homeElement = document.querySelector(".home");

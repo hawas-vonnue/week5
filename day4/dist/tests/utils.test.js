@@ -118,13 +118,13 @@ describe("createCard event listeners", () => {
         expect(card).not.toBe(null);
     });
     test("add to watch list", async () => {
-        let card = await addToWatchList("tt2543164");
+        const card = await addToWatchList("tt2543164");
         expect(card).not.toBe(null);
     });
     test("fall back link works:", () => {
-        let card = createCard("inception", "10", ["Drama", "Psychological"], "https://m.media-amazon.com/images/M/MV5BYWM1YmZkNTctZDAwNy00ZTY4LWFjMTktYzU4ZjViMmU1OTJmXkEyXkFqcGdeQXVyMTA0MTM5NjI2._V1_QL75_UX380_CR0,4,380,562_.jpg", "20110", "10001", "true");
-        let errorEvent = new ErrorEvent("error", {});
-        let image = card.querySelector("img");
+        const card = createCard("inception", "10", ["Drama", "Psychological"], "https://m.media-amazon.com/images/M/MV5BYWM1YmZkNTctZDAwNy00ZTY4LWFjMTktYzU4ZjViMmU1OTJmXkEyXkFqcGdeQXVyMTA0MTM5NjI2._V1_QL75_UX380_CR0,4,380,562_.jpg", "20110", "10001", "true");
+        const errorEvent = new ErrorEvent("error", {});
+        const image = card.querySelector("img");
         if (image)
             image.dispatchEvent(errorEvent);
         expect(image?.src).toBe("https://picsum.photos/200/300");

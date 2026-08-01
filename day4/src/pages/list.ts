@@ -19,12 +19,12 @@ export async function renderListPage() {
     mainElement!.innerHTML = "";
 
     try {
-        let movies = await parseCSV();
+        const movies = await parseCSV();
         for (let i = 0; i < movies.length; i++) {
             let genres = movies[i].genre;
             genres = genres.replace(/'/g, '"');
-            let genresArray: string[] = JSON.parse(genres);
-            let card = createCard(
+            const genresArray: string[] = JSON.parse(genres);
+            const card = createCard(
                 movies[i].title,
                 movies[i].rating,
                 genresArray,

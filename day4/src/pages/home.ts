@@ -24,12 +24,12 @@ export async function renderHomePage() {
     topCardContainer.classList.add("cardContainer");
 
     try {
-        let movies = await parseCSV();
+        const movies = await parseCSV();
         for (let i = 0; i < 3; i++) {
             let genres = movies[i].genre;
             genres = genres.replace(/'/g, '"');
-            let genresArray: string[] = JSON.parse(genres);
-            let card = createCard(
+            const genresArray: string[] = JSON.parse(genres);
+            const card = createCard(
                 movies[i].title,
                 movies[i].rating,
                 genresArray,

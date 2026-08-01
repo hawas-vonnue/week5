@@ -1,7 +1,7 @@
 import { Queue } from "@utils/queue";
 
 describe("Testing queue with string", () => {
-    let queue = new Queue<string>();
+    const queue = new Queue<string>();
 
     test("stores data", () => {
         queue.enqueue("hello");
@@ -18,8 +18,8 @@ describe("Testing queue with string", () => {
 });
 
 describe("Testing queue with number", () => {
-    let queue = new Queue<number>();
-    let number = 10;
+    const queue = new Queue<number>();
+    const number = 10;
 
     test("stores data", () => {
         queue.enqueue(number);
@@ -36,8 +36,8 @@ describe("Testing queue with number", () => {
 });
 
 describe("Testing queue with object", () => {
-    let queue = new Queue<object>();
-    let obj: object = {
+    const queue = new Queue<object>();
+    const obj: object = {
         id: 101,
         name: "damodharan unni magan dharman edamkochi",
     };

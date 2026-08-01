@@ -9,12 +9,12 @@ describe("state manager test", () => {
         },
         moviesList: new Set(),
     };
-    let reducer1 = jest
+    const reducer1 = jest
         .fn()
         .mockImplementation((state, action) => {
         return initialState;
     });
-    let subscriberMock = jest.fn().mockImplementation(() => {
+    const subscriberMock = jest.fn().mockImplementation(() => {
         console.log("subscriber function called");
     });
     const store1 = createStore(initialState, reducer1);

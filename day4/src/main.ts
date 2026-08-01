@@ -55,9 +55,9 @@ function init() {
     let pathname = document.location.pathname;
     let obj = {};
     if (pathname.includes(":")) {
-        let pathnames = pathname.split("/");
+        const pathnames = pathname.split("/");
         pathname = pathnames.slice(0, -1).join("/");
-        let imdbId = pathnames[pathnames.length - 1].slice(1);
+        const imdbId = pathnames[pathnames.length - 1].slice(1);
         obj = { imdbID: imdbId };
     }
     if (routes.includes(pathname)) {
@@ -108,11 +108,11 @@ store.subscribe("MOVIESLIST_CHANGED", (state: State) => {
     renderUpdatedMoviesList(state);
 });
 
-let overlay = createModal();
+const overlay = createModal();
 document.body.prepend(overlay);
 window.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
-        let overlay1 = document.querySelector(".overlay");
+        const overlay1 = document.querySelector(".overlay");
         if (overlay1 instanceof HTMLElement) {
             if (overlay1?.style.display !== "none")
                 overlay1.style.display = "none";
