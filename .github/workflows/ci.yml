@@ -15,6 +15,7 @@ jobs:
 
             - name: Start local server
               run: npx http-server -p 8080 &
+              working-directory: ./day4/dist
 
             - name: verify code
               run: |
