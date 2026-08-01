@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "target": "ES2022",
+        "module": "ES2022",
+        "outDir": "dist",
+        "rootDir": "src",
+        "experimentalDecorators": true,
+        "types": ["node", "jest"],
+        "esModuleInterop": true,
+        "paths": {
+            "@pages/*": ["./src/pages/*"],
+            "@utils/*": ["./src//utils/*"]
+        },
+        "declaration": true
+    }
+}
