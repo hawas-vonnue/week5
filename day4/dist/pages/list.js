@@ -1,0 +1,32 @@
+import { parseCSV } from "../utils/util.js";
+import { createCard } from "../utils/util.js";
+import { showToast } from "../utils/showToast.js";
+export async function renderListPage() {
+    const documentFragment = document.createElement("div");
+    const headingElement = document.createElement("h1");
+    const spinnerElement = document.createElement("div");
+    const cardContainer = document.createElement("div");
+    const mainElement = document.querySelector("main");
+    documentFragment.classList.add("list");
+    spinnerElement.classList.add("spinner");
+    cardContainer.classList.add("cardContainer");
+    headingElement.textContent = "MOVIES";
+    documentFragment.append(headingElement, spinnerElement);
+    mainElement.innerHTML = "";
+    try {
+        const movies = await parseCSV();
+        for (let i = 0; i < movies.length; i++) {
+            let genres = movies[i].genre;
+            genres = genres.replace(/'/g, '"');
+            const genresArray = JSON.parse(genres);
+            const card = createCard(movies[i].title, movies[i].rating, genresArray, movies[i].image, movies[i].year, movies[i].imdbid);
+            cardContainer.appendChild(card);
+        }
+        documentFragment.append(cardContainer);
+        spinnerElement.classList.add("hidden");
+        mainElement.append(documentFragment);
+    }
+    catch (error) {
+        showToast("error in fetching data", 3, "error");
+    }
+}
