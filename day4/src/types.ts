@@ -1,7 +1,10 @@
+/** represents object with imdbID of type string */
 export interface ParamsInterface {
     imdbID?: string;
 }
 
+/** Action interface differes based on which type is so the payload differs accordingly
+ */
 export type actionInterface = RouteChanged | MovieListChanged | onLoadInterface;
 
 export interface RouteChanged {
@@ -27,11 +30,17 @@ export interface onLoadInterface {
     };
 }
 
+/** 
+It represents state of the store.
+It contain route and list of movies in watchList.
+*/
 export interface State {
+    /** represents path and parameter in url */
     route: {
         path: string;
         params: object;
     };
+    /** represents list of movies in watchlist */
     moviesList: Set<string>;
 }
 

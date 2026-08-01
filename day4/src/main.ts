@@ -104,7 +104,6 @@ store.subscribe("ROUTE_CHANGED", (state: State) => {
     renderUpdatedMoviesList(state);
 });
 store.subscribe("MOVIESLIST_CHANGED", (state: State) => {
-    // updateMovieList(state);
     renderUpdatedMoviesList(state);
 });
 
