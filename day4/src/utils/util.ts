@@ -4,6 +4,7 @@ import { showToast } from "./showToast.js";
 import { searchMovie } from "./searchMovie.js";
 import { State, types, actionInterface, ParamsInterface } from "../types.js";
 
+/**To register a path and associated function to SPA */
 export function register(
     routes: Record<string, Function>,
     path: string,
@@ -12,6 +13,7 @@ export function register(
     routes[path] = component;
 }
 
+/** To call the function associated with the path and params */
 export async function navigate(
     routes: Record<string, Function>,
     path: string,
@@ -34,6 +36,7 @@ export function createButton(text: string, backgroundColor = "white") {
     return button;
 }
 
+/** Create a movie card with details */
 export function createCard(
     name: string,
     rating: string,
@@ -106,6 +109,7 @@ export function createCard(
     return cardElement;
 }
 
+/**Creates a modal which has search option for movie */
 export function createModal() {
     const overlay = document.createElement("div");
     overlay.classList.add("overlay");
@@ -170,6 +174,7 @@ export function createModal() {
     return overlay;
 }
 
+/**Fetch and return the response.json() or throw error */
 export async function fetchJson(url: string) {
     try {
         const response = await fetch(url);
@@ -215,7 +220,7 @@ export function reducer(state: State, action: actionInterface): State {
     }
 }
 
-// Create Store
+/**store is used to store the state of the app and when the state is changed dispatch functions accordingly */
 export function createStore(
     initialState: State,
     reducer: (state: State, action: actionInterface) => State
@@ -286,6 +291,7 @@ export function createStore(
 //when testing (or in localhost )because cross-fetch needs absolute url
 // else use filepath = "/Top_100_Movies.csv"
 
+/** Parses csv and returns an object */
 export async function parseCSV(
     filePath = "http://127.0.0.1:8080/Top_100_Movies.csv"
 ) {
