@@ -19,11 +19,11 @@ describe("Router tests:", () => {
         </header>
         <main></main>
         `;
-    let path = "home";
-    let routes: Record<string, Function> = {};
+    const path = "home";
+    const routes: Record<string, Function> = {};
     let a = 10;
     test("register test", () => {
-        let fn = () => {
+        const fn = () => {
             a = 20;
         };
         register(routes, path, fn);
@@ -35,7 +35,7 @@ describe("Router tests:", () => {
     });
     test("navigation", async () => {
         let path1 = "/home";
-        let routes1 = {};
+        const routes1 = {};
         register(routes1, path1, renderHomePage);
         await navigate(routes1, path1, {});
         const homeElement = document.querySelector(".home");

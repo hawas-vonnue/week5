@@ -130,17 +130,16 @@ describe("watchList page", () => {
         const addButton = document.querySelector("button");
         document.body.append(overlay);
         addButton.click();
-        let closeButton = document.querySelector(".closeOverlayButton");
+        const closeButton = document.querySelector(".closeOverlayButton");
         if (closeButton instanceof HTMLElement) {
             closeButton.click();
             expect(overlay.style.display).toBe("none");
         }
         addButton.click();
-        let keyboardEvent = new KeyboardEvent("keydown", {
+        const keyboardEvent = new KeyboardEvent("keydown", {
             key: "Escape",
             code: "Escape",
         });
-        // await user.keyboard("{Escape}");
         window.dispatchEvent(keyboardEvent);
         expect(overlay.style.display).toBe("none");
     });
@@ -156,7 +155,7 @@ describe("watchList page", () => {
         </header>
         <main></main>
     `;
-        let searchMovieSpy = jest
+        const searchMovieSpy = jest
             .spyOn(searchMovieModule, "searchMovie")
             .mockImplementationOnce(async () => document.createDocumentFragment());
         const overlay = createModal();
@@ -167,12 +166,12 @@ describe("watchList page", () => {
         addButton.click();
         const inputElement = document.querySelector("input");
         inputElement.value = "hello";
-        let searchButton = document.querySelector(".searchButton");
+        const searchButton = document.querySelector(".searchButton");
         if (searchButton instanceof HTMLElement)
             searchButton?.click();
         expect(searchMovieSpy).toHaveBeenCalled();
         expect(spinnerElement?.classList).not.toContain("hidden");
-        let warningElement = document.querySelector(".warning");
+        const warningElement = document.querySelector(".warning");
         inputElement.value = "inception";
         searchMovieSpy.mockImplementationOnce(() => Promise.reject("hello"));
         if (searchButton instanceof HTMLElement)

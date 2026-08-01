@@ -6,7 +6,7 @@ export function register(routes, path, component) {
     routes[path] = component;
 }
 export async function navigate(routes, path, params) {
-    let fn = routes[path];
+    const fn = routes[path];
     if (params !== undefined && Object.keys(params).length !== 0)
         await fn(params.imdbID);
     else
@@ -46,7 +46,7 @@ export function createCard(name, rating, genres, posterSrc, year, imdbID = null,
     for (let i = 0; i < genres.length; i++) {
         if (i === 3)
             break;
-        let button = createButton(genres[i], "ghostwhite");
+        const button = createButton(genres[i], "ghostwhite");
         genreContainer.appendChild(button);
     }
     descriptionElement.append(nameElement, ratingElement, genreContainer);
@@ -58,7 +58,6 @@ export function createCard(name, rating, genres, posterSrc, year, imdbID = null,
         button.addEventListener("click", async (event) => {
             if (event.currentTarget instanceof HTMLElement) {
                 const cardToDelete = event.currentTarget.parentElement.parentElement;
-                // let movies = new Set();
                 await onMoviesListChange("delete", cardToDelete.id);
                 showToast("removed from watchlist", 3, "success");
             }
@@ -70,7 +69,7 @@ export function createCard(name, rating, genres, posterSrc, year, imdbID = null,
             event.target.className === "watchedButton")
             return;
         if (event.currentTarget instanceof HTMLElement) {
-            let imdbId = event.currentTarget.dataset.imdbId;
+            const imdbId = event.currentTarget.dataset.imdbId;
             let pathname = document.location.pathname;
             pathname = pathname.split("/").slice(0, -1).join("/");
             const url = `${pathname}/detail/:${imdbId}`;
@@ -111,7 +110,7 @@ export function createModal() {
         searchResultContainer.innerHTML = "";
         warningElement.textContent = "";
         if (searchButton.previousElementSibling instanceof HTMLInputElement) {
-            let searchValue = searchButton.previousElementSibling.value;
+            const searchValue = searchButton.previousElementSibling.value;
             if (searchValue === "")
                 return;
             if (searchValue.length < 3) {
@@ -153,7 +152,7 @@ export function reducer(state, action) {
                 route: action.payload,
             };
         case "MOVIESLIST_CHANGED": {
-            let list = state.moviesList;
+            const list = state.moviesList;
             if (action.payload.type === "add") {
                 list.add(action.payload.id);
                 showToast(`added movie to watchlist`, 3, "success");
@@ -178,7 +177,7 @@ export function reducer(state, action) {
 // Create Store
 export function createStore(initialState, reducer) {
     let state = initialState;
-    let listeners = {
+    const listeners = {
         MOVIESLIST_CHANGED: [],
         ROUTE_CHANGED: [],
         ON_LOAD: [],
@@ -201,10 +200,10 @@ export function createStore(initialState, reducer) {
                 localStorage.setItem("moviesList", JSON.stringify([...state.moviesList]));
             }
             if (action.type === "ROUTE_CHANGED") {
-                let value = localStorage.getItem("moviesList");
+                const value = localStorage.getItem("moviesList");
                 if (value !== null) {
-                    let moviesString = JSON.parse(value);
-                    let movies = new Set(moviesString);
+                    const moviesString = JSON.parse(value);
+                    const movies = new Set(moviesString);
                     state = reducer(state, {
                         type: "ON_LOAD",
                         payload: {
@@ -214,8 +213,8 @@ export function createStore(initialState, reducer) {
                 }
             }
             // Notify subscribers
-            let listenersOfType = listeners[action.type];
-            for (let listener of listenersOfType) {
+            const listenersOfType = listeners[action.type];
+            for (const listener of listenersOfType) {
                 await listener(state);
             }
         },
@@ -228,7 +227,7 @@ export function createStore(initialState, reducer) {
     };
 }
 //use filepath = http://127.0.0.1:8080/Top_100_Movies.csv
-//when testing because cross-fetch needs absolute url
+//when testing (or in localhost )because cross-fetch needs absolute url
 // else use filepath = "/Top_100_Movies.csv"
 export async function parseCSV(filePath = "http://127.0.0.1:8080/Top_100_Movies.csv") {
     const response = await fetch(filePath);
@@ -295,7 +294,7 @@ export function createSearchResultCard(title, year, posterSrc) {
     cardElement.append(imageElement, descriptionElement);
     addToWatchListButton.addEventListener("click", async (event) => {
         if (event.currentTarget instanceof HTMLElement) {
-            let imdbId = event.currentTarget.parentElement.parentElement.dataset
+            const imdbId = event.currentTarget.parentElement.parentElement.dataset
                 .imdbId;
             if (imdbId !== undefined)
                 await onMoviesListChange("add", imdbId);
@@ -305,7 +304,7 @@ export function createSearchResultCard(title, year, posterSrc) {
 }
 export async function addToWatchList(imdbId) {
     const overlay = document.querySelector(".overlay");
-    let url = `https://www.omdbapi.com/?i=${imdbId}&page=1&apikey=cbd3390f`;
+    const url = `https://www.omdbapi.com/?i=${imdbId}&page=1&apikey=cbd3390f`;
     let result;
     try {
         result = await fetchJson(url);
@@ -318,18 +317,18 @@ export async function addToWatchList(imdbId) {
         rating = "N/A";
     else
         rating = result.Ratings[0].Value;
-    let genres = result.Genre.split(",");
-    let card = createCard(result.Title, rating, genres, result.Poster, result.Year, result.imdbID, "true");
+    const genres = result.Genre.split(",");
+    const card = createCard(result.Title, rating, genres, result.Poster, result.Year, result.imdbID, "true");
     return card;
 }
 export async function renderUpdatedMoviesList(state) {
     if (!document.location.pathname.includes("watchlist"))
         return;
-    let movies = state.moviesList;
-    let moviesList = movies;
+    const movies = state.moviesList;
+    const moviesList = movies;
     const watchListContainer = document.querySelector(".watchListContainer");
     const documentFragment = document.createDocumentFragment();
-    for (let movie of moviesList) {
+    for (const movie of moviesList) {
         const card = await addToWatchList(movie);
         documentFragment.append(card);
     }
@@ -337,17 +336,3 @@ export async function renderUpdatedMoviesList(state) {
     watchListContainer.replaceChildren(documentFragment);
     spinner.classList.add("hidden");
 }
-// export async function updateMovieList(state: State) {
-//     let type = state.movieChanged.type;
-//     let id = state.movieChanged.id;
-//     const watchListContainer = document.querySelector(".watchListContainer");
-//     if (type === "delete") {
-//         const card = document.getElementById(id);
-//         if (card) watchListContainer!.removeChild(card);
-//     }
-//     if (type === "add") {
-//         const card = await addToWatchList(id);
-//         watchListContainer!.append(card);
-// showToast(`added movie to watchlist`, 3, "success");
-//     }
-// }

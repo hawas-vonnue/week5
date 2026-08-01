@@ -1,6 +1,6 @@
 import { Queue } from "../utils/queue";
 describe("Testing queue with string", () => {
-    let queue = new Queue();
+    const queue = new Queue();
     test("stores data", () => {
         queue.enqueue("hello");
         expect(queue.queue).toContain("hello");
@@ -13,8 +13,8 @@ describe("Testing queue with string", () => {
     });
 });
 describe("Testing queue with number", () => {
-    let queue = new Queue();
-    let number = 10;
+    const queue = new Queue();
+    const number = 10;
     test("stores data", () => {
         queue.enqueue(number);
         expect(queue.queue).toContain(number);
@@ -27,8 +27,8 @@ describe("Testing queue with number", () => {
     });
 });
 describe("Testing queue with object", () => {
-    let queue = new Queue();
-    let obj = {
+    const queue = new Queue();
+    const obj = {
         id: 101,
         name: "damodharan unni magan dharman edamkochi",
     };

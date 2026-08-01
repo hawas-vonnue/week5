@@ -20,12 +20,12 @@ export async function renderHomePage() {
     heroElement.append(imageElement, overlayElement, headingElement);
     topCardContainer.classList.add("cardContainer");
     try {
-        let movies = await parseCSV();
+        const movies = await parseCSV();
         for (let i = 0; i < 3; i++) {
             let genres = movies[i].genre;
             genres = genres.replace(/'/g, '"');
-            let genresArray = JSON.parse(genres);
-            let card = createCard(movies[i].title, movies[i].rating, genresArray, movies[i].image, movies[i].year, movies[i].imdbid);
+            const genresArray = JSON.parse(genres);
+            const card = createCard(movies[i].title, movies[i].rating, genresArray, movies[i].image, movies[i].year, movies[i].imdbid);
             topCardContainer.appendChild(card);
         }
         topElement.append(h3Element, topCardContainer);

@@ -17,7 +17,7 @@ export async function navigate(
     path: string,
     params: ParamsInterface
 ) {
-    let fn = routes[path];
+    const fn = routes[path];
     if (params !== undefined && Object.keys(params).length !== 0)
         await fn(params.imdbID);
     else await fn();
@@ -66,7 +66,7 @@ export function createCard(
     genreContainer.classList.add("genreContainer");
     for (let i = 0; i < genres.length; i++) {
         if (i === 3) break;
-        let button = createButton(genres[i], "ghostwhite");
+        const button = createButton(genres[i], "ghostwhite");
         genreContainer.appendChild(button);
     }
     descriptionElement.append(nameElement, ratingElement, genreContainer);
@@ -94,7 +94,7 @@ export function createCard(
             return;
 
         if (event.currentTarget instanceof HTMLElement) {
-            let imdbId = event.currentTarget.dataset.imdbId;
+            const imdbId = event.currentTarget.dataset.imdbId;
             let pathname = document.location.pathname;
             pathname = pathname.split("/").slice(0, -1).join("/");
             const url = `${pathname}/detail/:${imdbId}`;
@@ -145,7 +145,7 @@ export function createModal() {
         searchResultContainer.innerHTML = "";
         warningElement.textContent = "";
         if (searchButton.previousElementSibling instanceof HTMLInputElement) {
-            let searchValue = searchButton.previousElementSibling.value;
+            const searchValue = searchButton.previousElementSibling.value;
             if (searchValue === "") return;
             if (searchValue.length < 3) {
                 warningElement.textContent = "Type at least three characters";
@@ -192,7 +192,7 @@ export function reducer(state: State, action: actionInterface): State {
                 route: action.payload,
             };
         case "MOVIESLIST_CHANGED": {
-            let list = state.moviesList;
+            const list = state.moviesList;
             if (action.payload.type === "add") {
                 list.add(action.payload.id);
                 showToast(`added movie to watchlist`, 3, "success");
@@ -221,7 +221,7 @@ export function createStore(
     reducer: (state: State, action: actionInterface) => State
 ) {
     let state = initialState;
-    let listeners: Record<types, ((state: State) => void)[]> = {
+    const listeners: Record<types, ((state: State) => void)[]> = {
         MOVIESLIST_CHANGED: [],
         ROUTE_CHANGED: [],
         ON_LOAD: [],
@@ -253,10 +253,10 @@ export function createStore(
                 );
             }
             if (action.type === "ROUTE_CHANGED") {
-                let value = localStorage.getItem("moviesList");
+                const value = localStorage.getItem("moviesList");
                 if (value !== null) {
-                    let moviesString: string = JSON.parse(value);
-                    let movies = new Set(moviesString);
+                    const moviesString: string = JSON.parse(value);
+                    const movies = new Set(moviesString);
                     state = reducer(state, {
                         type: "ON_LOAD",
                         payload: {
@@ -267,8 +267,8 @@ export function createStore(
             }
 
             // Notify subscribers
-            let listenersOfType = listeners[action.type];
-            for (let listener of listenersOfType) {
+            const listenersOfType = listeners[action.type];
+            for (const listener of listenersOfType) {
                 await listener(state);
             }
         },
@@ -365,7 +365,7 @@ export function createSearchResultCard(
     cardElement.append(imageElement, descriptionElement);
     addToWatchListButton.addEventListener("click", async (event) => {
         if (event.currentTarget instanceof HTMLElement) {
-            let imdbId =
+            const imdbId =
                 event.currentTarget!.parentElement!.parentElement!.dataset!
                     .imdbId;
             if (imdbId !== undefined) await onMoviesListChange("add", imdbId);
@@ -377,7 +377,7 @@ export function createSearchResultCard(
 
 export async function addToWatchList(imdbId: string) {
     const overlay = document.querySelector(".overlay");
-    let url = `https://www.omdbapi.com/?i=${imdbId}&page=1&apikey=cbd3390f`;
+    const url = `https://www.omdbapi.com/?i=${imdbId}&page=1&apikey=cbd3390f`;
     let result;
     try {
         result = await fetchJson(url);
@@ -387,8 +387,8 @@ export async function addToWatchList(imdbId: string) {
     let rating;
     if (result.Ratings.length === 0) rating = "N/A";
     else rating = result.Ratings[0].Value;
-    let genres = result.Genre.split(",");
-    let card = createCard(
+    const genres = result.Genre.split(",");
+    const card = createCard(
         result.Title,
         rating,
         genres,
@@ -403,11 +403,11 @@ export async function addToWatchList(imdbId: string) {
 
 export async function renderUpdatedMoviesList(state: State) {
     if (!document.location.pathname.includes("watchlist")) return;
-    let movies = state.moviesList;
-    let moviesList = movies;
+    const movies = state.moviesList;
+    const moviesList = movies;
     const watchListContainer = document.querySelector(".watchListContainer");
     const documentFragment = document.createDocumentFragment();
-    for (let movie of moviesList) {
+    for (const movie of moviesList) {
         const card = await addToWatchList(movie);
         documentFragment.append(card);
     }
